@@ -3,13 +3,26 @@ package com.example.gymlog.Database.entities;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.example.gymlog.Database.GymLogDatabase;
+
 import java.time.LocalDate;
 import java.util.Objects;
+
+/**
+ *
+ *<br>
+ * This is the GymLog class
+ * <br>
+ * ?
+ * <br>
+ *  @author Serena Ngo
+ *  @since 07/25/2025
+ */
 
 //represents GymLog entity, will require annotations
 //This GymLog.java will be stored in the database
 //Specify table name where this will be stored
-@Entity(tableName = "gymLog")
+@Entity(tableName = GymLogDatabase.gymLogTable)
 
 public class GymLog {
     @PrimaryKey (autoGenerate = true) //create unique identifier for a piece of data
@@ -23,6 +36,7 @@ public class GymLog {
         this.exercise = exercise;
         this.weight = weight;
         this.reps = reps;
+        date = LocalDate.now();
     }
 
     @Override
