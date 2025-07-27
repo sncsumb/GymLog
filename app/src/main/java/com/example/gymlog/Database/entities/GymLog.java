@@ -22,7 +22,7 @@ import java.util.Objects;
 //represents GymLog entity, will require annotations
 //This GymLog.java will be stored in the database
 //Specify table name where this will be stored
-@Entity(tableName = GymLogDatabase.gymLogTable)
+@Entity(tableName = GymLogDatabase.GYM_LOG_TABLE)
 
 public class GymLog {
     @PrimaryKey (autoGenerate = true) //create unique identifier for a piece of data

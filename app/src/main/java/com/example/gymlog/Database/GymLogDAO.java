@@ -7,6 +7,7 @@ import androidx.room.Query;
 
 import com.example.gymlog.Database.entities.GymLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,6 +30,6 @@ public interface GymLogDAO {
     // it will replace the existing thing in the database with the new one
     void insert(GymLog gymLog);
 
-    @Query("Select * from " + GymLogDatabase.gymLogTable) //static reference to the name of the table that is defined in the database
-    List<GymLog> getAllRecords();
+    @Query("Select * from " + GymLogDatabase.GYM_LOG_TABLE) //static reference to the name of the table that is defined in the database
+    ArrayList<GymLog> getAllRecords();
 }
