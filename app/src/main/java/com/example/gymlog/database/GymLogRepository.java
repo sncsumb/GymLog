@@ -71,7 +71,7 @@ public class GymLogRepository {
                 }
         );
         try {
-            return future.get(); //pull informaton out of future object
+            return future.get(); //pull information out of future object
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
             Log.i(MainActivity.TAG, "Problem when getting all GymLogs in the repository");
@@ -79,6 +79,7 @@ public class GymLogRepository {
         return null;
     }
 
+    //may need to have wait feature for future
     public void insertGymLog(GymLog gymLog) {
         GymLogDatabase.databaseWriteExecutor.execute(() -> {
             gymLogDAO.insert(gymLog);
