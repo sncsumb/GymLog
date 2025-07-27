@@ -29,6 +29,6 @@ public interface GymLogDAO {
     // it will replace the existing thing in the database with the new one
     void insert(GymLog gymLog);
 
-    @Query("Select * from " + GymLogDatabase.GYM_LOG_TABLE) //static reference to the name of the table that is defined in the database
+    @Query("SELECT * FROM " + GymLogDatabase.GYM_LOG_TABLE + " ORDER BY date DESC") //static reference to the name of the table that is defined in the database
     List<GymLog> getAllRecords();
 }
