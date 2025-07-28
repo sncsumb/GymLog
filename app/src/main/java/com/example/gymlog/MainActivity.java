@@ -1,16 +1,12 @@
 package com.example.gymlog;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.gymlog.database.GymLogRepository;
 import com.example.gymlog.database.entities.GymLog;
@@ -21,6 +17,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String MAIN_ACTIVITY_USER_ID = "MAIN_ACTIVITY_USER_ID ";
     ActivityMainBinding binding;
     private GymLogRepository repository;
     public static final String TAG = "SN_GYMLOG";
@@ -36,6 +33,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        loginUser();
+
+        if(loggedInUserId == -1){
+            Intent intent = LoginActivity.loginIntentFactory((getApplicationContext()));
+            startActivity(intent);
+        }
 
         //get instance of repository, access to database
         repository = GymLogRepository.getRepository(getApplication());
@@ -62,6 +66,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void loginUser() {
+        loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, -1);
+    }
+
+    //take login information
+    //package private - can be package private because all of our activities are in the same package
+    //static because we never instantiate main activity (android does that for us)
+    static Intent mainActivityIntentFactory(Context context, int userId) {
+        Intent intent = new Intent(context, MainActivity.class); //use intent to start main activity
+        intent.putExtra(MAIN_ACTIVITY_USER_ID, userId);
+        return intent;
     }
 
     private void insertGymlogRecord() {
