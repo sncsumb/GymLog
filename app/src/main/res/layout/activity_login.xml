@@ -7,11 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".LoginActivity">
 
+    <EditText
+        android:id="@+id/passwordLoginEditText"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
+        android:autofillHints="Please enter username"
+        android:gravity="center"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userNameLoginEditText" />
+
     <TextView
         android:id="@+id/titleLoginTextView"
         android:layout_width="match_parent"
         android:layout_height="150dip"
         android:layout_margin="16dip"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="@string/login_welcome"
         android:textSize="42sp"
@@ -24,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
         android:autofillHints="Please enter username"
         android:gravity="center"
         android:hint="@string/username"
@@ -33,25 +50,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/titleLoginTextView" />
 
-    <EditText
-        android:id="@+id/passwordLoginEditText"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_margin="16dp"
-        android:autofillHints="Please enter username"
-        android:gravity="center"
-        android:hint="@string/password"
-        android:inputType="textPassword"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/userNameLoginEditText" />
-
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="105dp"
         android:layout_margin="16dp"
+        android:layout_marginTop="24dp"
         android:text="@string/login"
         android:textSize="32sp"
         app:layout_constraintEnd_toEndOf="parent"
