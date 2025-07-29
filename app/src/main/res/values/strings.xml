@@ -13,4 +13,5 @@
     <string name="password">password</string>
     <string name="login">login</string>
     <string name="logged_in">LOGGED IN</string>
+    <string name="nothing_to_show_time_to_hit_the_gym" />
 </resources>
