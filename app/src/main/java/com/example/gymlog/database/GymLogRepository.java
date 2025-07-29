@@ -105,6 +105,11 @@ public class GymLogRepository {
         return userDAO.getUserByUserId(userId); //return LiveData
     }
 
+    public LiveData<List<GymLog>> getAllLogsByUserIdLiveData(int loggedInUserId) {
+        return gymLogDAO.getRecordsByUserIdLiveData(loggedInUserId);
+    }
+
+    @Deprecated
     public ArrayList<GymLog> getAllLogsByUserId(int loggedInUserId) {
         //Future gets a reference, something that will be fulfilled in the future and let a thread do its operation
         //when it comes back we can process it
