@@ -52,21 +52,19 @@ public class LoginActivity extends AppCompatActivity {
         }
         LiveData<User> userObserver = repository.getUserByUserName(username);
         userObserver.observe(this, user -> {
-            if (user != null) {
-                String password = binding.passwordLoginEditText.getText().toString();
-                if (password.equals(user.getPassword())) {
+            if (user != null) { //grab user password if user exists (not null)
+                String password = binding.passwordLoginEditText.getText().toString(); //grab password
+                if (password.equals(user.getPassword())) { //if password match, start activity
                     //get reference to sharedPreferences object (preferences that are shared system wide)
-                    SharedPreferences sharedPreferences = getApplicationContext()
-                            .getSharedPreferences(MainActivity.SHARED_PREFERENCE_USERID_KEY,//used shared references key to get list of all preferences associated with application
-                            Context.MODE_PRIVATE); //and do not share this information outside of this application (mode_private)
-                    //Editor - inner class to shared preferences to edit the settings in our shared preference (preserves encapsulation)
-                    SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-                    sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, user.getId()); //store userID with key
-                    sharedPrefEditor.apply(); //save changes
+//                    SharedPreferences sharedPreferences = getApplicationContext()
+//                            .getSharedPreferences(MainActivity.SHARED_PREFERENCE_USERID_KEY,//used shared references key to get list of all preferences associated with application
+//                            Context.MODE_PRIVATE); //and do not share this information outside of this application (mode_private)
+//                    //Editor - inner class to shared preferences to edit the settings in our shared preference (preserves encapsulation)
+//                    SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+//                    sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, user.getId()); //store userID with key
+//                    sharedPrefEditor.apply(); //save changes
                     //reset the intent
-                    System.out.println("before loginActivity " + user.getId());
                     startActivity(MainActivity.mainActivityIntentFactory(getApplicationContext(), user.getId()));
-                    System.out.println("after loginActivity " + user.getId());
 
                 } else {
                     toastMaker("Invalid password!");
