@@ -12,4 +12,5 @@
     <string name="username">Username</string>
     <string name="password">password</string>
     <string name="login">login</string>
+    <string name="logged_in">LOGGED IN</string>
 </resources>
