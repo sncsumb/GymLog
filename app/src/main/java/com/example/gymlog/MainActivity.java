@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String MAIN_ACTIVITY_USER_ID = "MAIN_ACTIVITY_USER_ID";
     static final String SHARED_PREFERENCE_USERID_KEY = "SHARED_PREFERENCE_USERID_KEY";
-    static final String SHARED_PREFERENCE_USERID_VALUE = "SHARED_PREFERENCE_USERID_VALUE";
     private static final String SAVED_INSTANCE_STATE_USERID_KEY = "SAVED_INSTANCE_STATE_USERID_KEY";
     private static final int LOGGED_OUT = -1;
     ActivityMainBinding binding;
@@ -53,10 +52,16 @@ public class MainActivity extends AppCompatActivity {
         repository = GymLogRepository.getRepository(getApplication());
         loginUser(savedInstanceState); //user needs to log in
 
+        //updated with logout userId
+//        updateSharedPreference();
+        //user is not logged in at this point, go to login screen
         if(loggedInUserId == -1){
             Intent intent = LoginActivity.loginIntentFactory((getApplicationContext()));
             startActivity(intent);
         }
+
+        //write username to sharedPreference
+        updateSharedPreference();
 
         //scrollable content
         binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
@@ -88,19 +93,17 @@ public class MainActivity extends AppCompatActivity {
      *
      */
     private void loginUser(Bundle savedInstanceState) {
-        //check for shared preference for logged in user
+        //check shared preference for logged in user and read from the file
         //shared preference is a key value pair that is the mid level of persistence
         //somewhere in between intent and database call
         //system level variable
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_USERID_KEY,
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.preference_file_key),
                 Context.MODE_PRIVATE); //get shared preferences associated with the application only in this device
-        if (sharedPreferences.contains(SHARED_PREFERENCE_USERID_VALUE)) { //if UserID is in sharedPreferences
+        //if (sharedPreferences.contains(SHARED_PREFERENCE_USERID_VALUE)) { //if UserID is in sharedPreferences
             //get sharedPreference for userID, used LOGGED_OUT value if it does not exist
-            loggedInUserId = sharedPreferences.getInt(SHARED_PREFERENCE_USERID_VALUE, LOGGED_OUT);
-            System.out.println("in loginUser 1" + user);
-
+            loggedInUserId = sharedPreferences.getInt(getString(R.string.preference_userId_key), LOGGED_OUT);
             //if the user is logged out, if they are a shared preference, get from database
-        } //allows users to still stay logged in even after closing the application
+        //} //allows users to still stay logged in even after closing the application
 //        check intent for logged in user
         if (loggedInUserId == LOGGED_OUT && savedInstanceState != null && savedInstanceState.containsKey(SAVED_INSTANCE_STATE_USERID_KEY)) {
             loggedInUserId = savedInstanceState.getInt(SAVED_INSTANCE_STATE_USERID_KEY, LOGGED_OUT);
@@ -126,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
             this.user = user;
             if(this.user != null) {
                 invalidateOptionsMenu();
-            } else {
-                logout();
             }
         });
 
@@ -150,11 +151,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVED_INSTANCE_STATE_USERID_KEY, loggedInUserId);
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_USERID_KEY,
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-        sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, loggedInUserId);
-        sharedPrefEditor.apply();
+        updateSharedPreference(); //if userID changed (when savedInstance is called), update the value of sharedPreference
+//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_USERID_KEY,
+//                Context.MODE_PRIVATE);
+//        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+//        sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, loggedInUserId);
+//        sharedPrefEditor.apply();
     }
 
     /**
@@ -227,16 +229,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        //set sharedPreference value to -1
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(SHARED_PREFERENCE_USERID_KEY,Context.MODE_PRIVATE);
-        //get editor
-        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-        sharedPrefEditor.putInt(SHARED_PREFERENCE_USERID_KEY, LOGGED_OUT);
-        sharedPrefEditor.apply();
+        loggedInUserId = loggedInUserId;
+        updateSharedPreference();
         //reset the intent
         getIntent().putExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT)
 ;        //go to the login activity
         startActivity(LoginActivity.loginIntentFactory((getApplicationContext())));
+    }
+
+    private void updateSharedPreference() {
+        //set sharedPreference value to -1
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getString(R.string.preference_file_key),
+                Context.MODE_PRIVATE);
+        //get editor
+        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        sharedPrefEditor.putInt(getString(R.string.preference_userId_key), loggedInUserId); //update SharedPreference anytime you need to update it
+        sharedPrefEditor.apply();
     }
 
     //take login information
