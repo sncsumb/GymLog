@@ -16,11 +16,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gymlog.database.GymLogRepository;
 import com.example.gymlog.database.entities.GymLog;
 import com.example.gymlog.database.entities.User;
 import com.example.gymlog.databinding.ActivityMainBinding;
+import com.example.gymlog.viewHolders.GymLogAdapter;
+import com.example.gymlog.viewHolders.GymLogViewModel;
 
 import java.util.ArrayList;
 
@@ -32,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOGGED_OUT = -1;
     ActivityMainBinding binding;
     private GymLogRepository repository;
+    private GymLogViewModel gymLogViewModel;
     public static final String TAG = "SN_GYMLOG";
     String mExercise = "";
     double mWeight = 0.0;
@@ -47,10 +53,23 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        gymLogViewModel = new ViewModelProvider(this).get(GymLogViewModel.class);
+
+
+        //initialize recycler
+        RecyclerView recyclerView = binding.logDisplayRecyclerView;
+        final GymLogAdapter adapter = new GymLogAdapter(new GymLogAdapter.GymLogDiff());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
 
         //get instance of repository, access to database, retrieve information from the db
         repository = GymLogRepository.getRepository(getApplication());
         loginUser(savedInstanceState); //user needs to log in
+
+        gymLogViewModel.getAllLogsById(loggedInUserId).observe(this, gymLogs -> {
+            adapter.submitList(gymLogs);
+        });
 
         //updated with logout userId
 //        updateSharedPreference();
@@ -63,27 +82,28 @@ public class MainActivity extends AppCompatActivity {
         //write username to sharedPreference
         updateSharedPreference();
 
+        //TODO: remove two lines below
         //scrollable content
-        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
-        updateDisplay(); //update display with new information after reopening app
+//        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
+//        updateDisplay(); //update display with new information after reopening app
         //adds data into database and displays on application
         binding.logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInformationFromDisplay(); //get new information
                 insertGymlogRecord();
-                updateDisplay();
+//                updateDisplay();
 
             }
         });
 
         //display data on application in realtime
-        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateDisplay();
-            }
-        });
+//        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                updateDisplay();
+//            }
+//        });
 
     }
 
@@ -229,7 +249,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        loggedInUserId = loggedInUserId;
+        //change logged in user to logged out
+        loggedInUserId = LOGGED_OUT;
         updateSharedPreference();
         //reset the intent
         getIntent().putExtra(MAIN_ACTIVITY_USER_ID, LOGGED_OUT)
@@ -265,6 +286,7 @@ public class MainActivity extends AppCompatActivity {
         repository.insertGymLog(log);
     }
 
+    @Deprecated
     //Update information for entered data
     private void updateDisplay() {
         ArrayList<GymLog> allLogs = repository.getAllLogsByUserId(loggedInUserId);
@@ -272,13 +294,13 @@ public class MainActivity extends AppCompatActivity {
 //
 //        });
         if(allLogs.isEmpty()) {
-            binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
+//            binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
         }
         StringBuilder sb = new StringBuilder();
         for(GymLog log : allLogs) {
             sb.append(log);
         }
-        binding.logDisplayTextView.setText(sb.toString());
+//        binding.logDisplayTextView.setText(sb.toString()); logDisplayTextView no longer exists
     }
 
     private void getInformationFromDisplay() {
