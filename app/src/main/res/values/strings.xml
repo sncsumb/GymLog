@@ -16,4 +16,5 @@
     <string name="nothing_to_show_time_to_hit_the_gym" />
     <string name="preference_file_key">sngoPreferenceFileNameGymlog</string>
     <string name="preference_userId_key">sngoLogPreferenceUserIdKeyGymLog\n</string>
+    <string name="hello">Hello</string>
 </resources>

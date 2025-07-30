@@ -26,11 +26,11 @@
         android:id="@+id/titleLoginTextView"
         android:layout_width="match_parent"
         android:layout_height="150dip"
-        android:layout_margin="16dip"
+        android:layout_margin="90dip"
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="@string/login_welcome"
-        android:textSize="42sp"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
