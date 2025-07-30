@@ -7,6 +7,16 @@ import com.example.gymlog.database.GymLogDatabase;
 
 import java.util.Objects;
 
+/**
+ *
+ *<br>
+ * This is the User class
+ * <br>
+ * This class represents how Users are assigned
+ *  @author Serena Ngo
+ *  @since 07/27/2025
+ */
+
 @Entity(tableName = GymLogDatabase.USER_TABLE)
 public class User {
     @PrimaryKey(autoGenerate = true)

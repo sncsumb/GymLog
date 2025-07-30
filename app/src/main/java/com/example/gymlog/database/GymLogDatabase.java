@@ -38,7 +38,6 @@ public abstract class GymLogDatabase extends RoomDatabase {
     public static final String USER_TABLE = "usertable";
     public static final String DATABASE_NAME = "GymLogDatabase";
     public static final String GYM_LOG_TABLE = "gymLogTable";
-
     private static volatile GymLogDatabase INSTANCE; //don't want multiple things to access our database at any time
     private static final int NUMBER_OF_THREADS = 4; //don't want to run database queries on the main database thread
 

@@ -14,11 +14,20 @@ import com.example.gymlog.database.GymLogRepository;
 import com.example.gymlog.database.entities.User;
 import com.example.gymlog.databinding.ActivityLoginBinding;
 
+/**
+ *
+ *<br>
+ * This is the LoginActivity class
+ * <br>
+ * This class gives functionality for users to log in
+ * <br>
+ *  @author Serena Ngo
+ *  @since 07/27/2025
+ */
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
-
     private GymLogRepository repository;
 
     @Override
@@ -55,14 +64,6 @@ public class LoginActivity extends AppCompatActivity {
             if (user != null) { //grab user password if user exists (not null)
                 String password = binding.passwordLoginEditText.getText().toString(); //grab password
                 if (password.equals(user.getPassword())) { //if password match, start activity
-                    //get reference to sharedPreferences object (preferences that are shared system wide)
-//                    SharedPreferences sharedPreferences = getApplicationContext()
-//                            .getSharedPreferences(MainActivity.SHARED_PREFERENCE_USERID_KEY,//used shared references key to get list of all preferences associated with application
-//                            Context.MODE_PRIVATE); //and do not share this information outside of this application (mode_private)
-//                    //Editor - inner class to shared preferences to edit the settings in our shared preference (preserves encapsulation)
-//                    SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-//                    sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, user.getId()); //store userID with key
-//                    sharedPrefEditor.apply(); //save changes
                     //reset the intent
                     startActivity(MainActivity.mainActivityIntentFactory(getApplicationContext(), user.getId()));
 
