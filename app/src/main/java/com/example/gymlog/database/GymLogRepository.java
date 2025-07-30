@@ -16,6 +16,16 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+/**
+ *
+ *<br>
+ * This is the GymLog repository
+ * <br>
+ * This class allows use to use DAO to access our database
+ * <br>
+ *  @author Serena Ngo
+ *  @since 07/25/2025
+ */
 public class GymLogRepository {
 
     private final GymLogDAO gymLogDAO;
@@ -109,14 +119,16 @@ public class GymLogRepository {
         return gymLogDAO.getRecordsByUserIdLiveData(loggedInUserId);
     }
 
+    /**
+     * getAllLogsByUserId gets Future as a reference for something that will be fulfilled later
+     * This let's us offload processing to a thread and wait for the thread to return
+     * The future object will access the GymLog database and submit the task to ExecutorService
+     * @param loggedInUserId
+     * @return
+     */
     @Deprecated
     public ArrayList<GymLog> getAllLogsByUserId(int loggedInUserId) {
-        //Future gets a reference, something that will be fulfilled in the future and let a thread do its operation
-        //when it comes back we can process it
-        //get a value sometime in the future
-        //offload processing to a thread and wait for that thread to return
-        //future object is accessing gymlog database
-        //submit task to ExecutorService
+
         Future<ArrayList<GymLog>> future = GymLogDatabase.databaseWriteExecutor.submit(
                 //submit instance of the class that implements Callable (interface)
                 new Callable<ArrayList<GymLog>>() {

@@ -29,6 +29,17 @@ import com.example.gymlog.viewHolders.GymLogViewModel;
 
 import java.util.ArrayList;
 
+/**
+ *
+ *<br>
+ * This is the MainActivity class
+ * <br>
+ * This is where all major functions are at
+ * <br>
+ *  @author Serena Ngo
+ *  @since 07/25/2025
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String MAIN_ACTIVITY_USER_ID = "MAIN_ACTIVITY_USER_ID";
@@ -42,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
     String mExercise = "";
     double mWeight = 0.0;
     int mReps = 0;
-
-    //TODO: add login information
     int loggedInUserId = -1;
     private User user;
 
@@ -55,13 +64,11 @@ public class MainActivity extends AppCompatActivity {
 
         gymLogViewModel = new ViewModelProvider(this).get(GymLogViewModel.class);
 
-
         //initialize recycler
         RecyclerView recyclerView = binding.logDisplayRecyclerView;
         final GymLogAdapter adapter = new GymLogAdapter(new GymLogAdapter.GymLogDiff());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         //get instance of repository, access to database, retrieve information from the db
         repository = GymLogRepository.getRepository(getApplication());
@@ -71,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
             adapter.submitList(gymLogs);
         });
 
-        //updated with logout userId
-//        updateSharedPreference();
         //user is not logged in at this point, go to login screen
         if(loggedInUserId == -1){
             Intent intent = LoginActivity.loginIntentFactory((getApplicationContext()));
@@ -82,34 +87,17 @@ public class MainActivity extends AppCompatActivity {
         //write username to sharedPreference
         updateSharedPreference();
 
-        //TODO: remove two lines below
-        //scrollable content
-//        binding.logDisplayTextView.setMovementMethod(new ScrollingMovementMethod());
-//        updateDisplay(); //update display with new information after reopening app
-        //adds data into database and displays on application
         binding.logButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getInformationFromDisplay(); //get new information
                 insertGymlogRecord();
-//                updateDisplay();
-
             }
         });
-
-        //display data on application in realtime
-//        binding.exerciseInputEditText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                updateDisplay();
-//            }
-//        });
-
     }
 
     /**
      * Login functionality; allows users to log into their GymLog account
-     *
      *
      */
     private void loginUser(Bundle savedInstanceState) {
@@ -151,20 +139,6 @@ public class MainActivity extends AppCompatActivity {
                 invalidateOptionsMenu();
             }
         });
-
-//        loggedInUserId = getIntent().getIntExtra(MAIN_ACTIVITY_USER_ID, -1);
-
-//        if(loggedInUserId == LOGGED_OUT) {
-//            return;
-//        } else {
-//            LiveData<User> userObserver = repository.getUserByUserId(loggedInUserId);
-//            userObserver.observe(this, user -> {
-//                if (user != null) {
-//                    this.user = user;
-//                    invalidateOptionsMenu(); //make sure user is logged in
-//                }
-//            });
-//        }
     }
 
     @Override
@@ -172,11 +146,6 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putInt(SAVED_INSTANCE_STATE_USERID_KEY, loggedInUserId);
         updateSharedPreference(); //if userID changed (when savedInstance is called), update the value of sharedPreference
-//        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCE_USERID_KEY,
-//                Context.MODE_PRIVATE);
-//        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-//        sharedPrefEditor.putInt(MainActivity.SHARED_PREFERENCE_USERID_KEY, loggedInUserId);
-//        sharedPrefEditor.apply();
     }
 
     /**
@@ -211,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
         item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem item) {
-//                Toast.makeText(MainActivity.this, "LOGOUT TO BE IMPLEMENTED", Toast.LENGTH_SHORT).show();
                 showLogoutDialog();
                 return false;
             }
@@ -269,8 +237,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //take login information
-    //package private - can be package private because all of our activities are in the same package
-    //static because we never instantiate main activity (android does that for us)
+    // static because we never instantiate main activity (android does that for us)
     static Intent mainActivityIntentFactory(Context context, int userId) {
         Intent intent = new Intent(context, MainActivity.class); //use intent to start main activity
         intent.putExtra(MAIN_ACTIVITY_USER_ID, userId); //sets key MAIN_ACTIVITY_USER_ID to value userID
@@ -290,17 +257,12 @@ public class MainActivity extends AppCompatActivity {
     //Update information for entered data
     private void updateDisplay() {
         ArrayList<GymLog> allLogs = repository.getAllLogsByUserId(loggedInUserId);
-//        allLogs.observe(this, List<GymLog> -> {
-//
-//        });
         if(allLogs.isEmpty()) {
-//            binding.logDisplayTextView.setText(R.string.nothing_to_show_time_to_hit_the_gym);
         }
         StringBuilder sb = new StringBuilder();
         for(GymLog log : allLogs) {
             sb.append(log);
         }
-//        binding.logDisplayTextView.setText(sb.toString()); logDisplayTextView no longer exists
     }
 
     private void getInformationFromDisplay() {

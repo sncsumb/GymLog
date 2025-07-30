@@ -14,8 +14,6 @@ import java.util.Objects;
  *<br>
  * This is the GymLog class
  * <br>
- * ?
- * <br>
  *  @author Serena Ngo
  *  @since 07/25/2025
  */
